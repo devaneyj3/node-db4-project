@@ -20,7 +20,6 @@ router.get('/recipes', async(req, res) => {
 router.get('/recipes/:id/shoppingList', async(req, res) => {
     const { id } = req.params;
     const shoppingList = await db.getShoppingList(id);
-    console.log(shoppingList)
     try {
         res.status(200).send(shoppingList)
         
@@ -28,6 +27,18 @@ router.get('/recipes/:id/shoppingList', async(req, res) => {
         error.dbError()
     }
 }) 
+
+router.get('/recipes/:id/instructions', async(req, res) => {
+    const { id } = req.params;
+    const instructions = await db.getInstructions(id);
+    console.log(instructions)
+    try {
+        res.status(200).send(instructions)
+
+    } catch (error) {
+        error.dbError()
+    }
+})
 
 module.exports = router;
 
