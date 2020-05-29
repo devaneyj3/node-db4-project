@@ -39,6 +39,17 @@ router.get('/recipes/:id/instructions', async(req, res) => {
         error.dbError()
     }
 })
+router.get('/ingredients/:id/recipes', async(req, res) => {
+    const { id } = req.params;
+    const recipesOfIngredient = await db.getRecipesOfIngredient(id);
+    console.log(recipesOfIngredient)
+    try {
+        res.status(200).send(recipesOfIngredient)
+
+    } catch (error) {
+        error.dbError()
+    }
+})
 
 module.exports = router;
 
