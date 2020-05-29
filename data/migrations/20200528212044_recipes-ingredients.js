@@ -11,25 +11,39 @@ exports.up = function (knex) {
             tbl.text('name')
             tbl.float('quantity')
         })
+        .createTable('steps', tbl => {
+            tbl.increments()
+            tbl.text('instructions')
+        })
         .createTable('recipes-ingredients', tbl => {
-            tbl.integer('recipes_id')
+            tbl.integer('recipe_id')
                 .unsigned()
                 .references('id')
                 .inTable('recipes')
-            tbl.integer('ingredients_id')
+            tbl.integer('ingredient_id')
                 .unsigned()
                 .references('id')
                 .inTable('ingredients')
-            // the combination of the two keys becomes our primary key
-            // will enforce unique combinations of ids
-            tbl.primary(['recipes_id', 'ingredients_id']);
-
+            tbl.primary(['recipe_id', 'ingredient_id']);
+        })
+        .createTable('recipes-steps', tbl => {
+            tbl.integer('recipe_id')
+                .unsigned()
+                .references('id')
+                .inTable('recipes')
+            tbl.integer('step_id')
+                .unsigned()
+                .references('id')
+                .inTable('steps')
+            tbl.primary(['recipe_id', 'step_id']);
         })
 };
 
 exports.down = function (knex) {
     return knex.schema
+        .dropTableIfExists('recipes-steps')
         .dropTableIfExists('recipes-ingredients')
+        .dropTableIfExists('steps')
         .dropTableIfExists('ingrdients')
         .dropTableIfExists('recipes');
 };
