@@ -17,5 +17,17 @@ router.get('/recipes', async(req, res) => {
     }
 })
 
+router.get('/recipes/:id/shoppingList', async(req, res) => {
+    const { id } = req.params;
+    const shoppingList = await db.getShoppingList(id);
+    console.log(shoppingList)
+    try {
+        res.status(200).send(shoppingList)
+        
+    } catch (error) {
+        error.dbError()
+    }
+}) 
+
 module.exports = router;
 
